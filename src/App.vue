@@ -1,0 +1,65 @@
+<template>
+  <Navbar></Navbar>
+  <router-view />
+  <footer>
+    <p>Copyright reserved to Roweb</p>
+  </footer>
+</template>
+
+<script>
+import Navbar from "@/components/Navbar.vue";
+export default {
+  components: {
+    Navbar,
+  },
+};
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: center; */
+  color: #2c3e50;
+  position: relative;
+  width: min(100%, 1500px);
+  margin-inline: auto;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #333;
+  background-color: #f2f2f7;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+nav,
+aside,
+main,
+footer,
+header {
+  background-color: #fff;
+  border: 1px solid gray;
+  padding: 20px;
+}
+footer {
+  position: sticky;
+  bottom: 0;
+  height: 50px;
+}
+</style>
