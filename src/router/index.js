@@ -1,17 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AdminView from "../views/AdminView.vue";
+import { useUserStore } from "@/stores/userStore";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: HomeView,
+    meta: { requiresAuth: false },
   },
   {
     path: "/admin",
     name: "admin",
     component: AdminView,
+    meta: { requiresAuth: true },
   },
   {
     path: "/about",
@@ -27,6 +30,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const store = useUserStore();
+  console.log("meta: " + to.meta.requiresAuth);
+  console.log("loggedin: " + store.loggedIn);
+  if (to.meta.requiresAuth && !store.loggedIn) {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
