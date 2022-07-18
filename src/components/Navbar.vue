@@ -6,6 +6,7 @@
         src="../assets/logo_transparent.png"
         alt="picture of etaraba logo"
     /></router-link>
+    <!-- https://localhost:44379/staticfiles/iphone12.jpg -->
     <form @submit.prevent="searchSubmit" class="search__bar">
       <!-- To implement "searchSubmit" -->
       <input
@@ -35,20 +36,20 @@
       <!-- To implement "cartItems logic" -->
     </div>
     <CartDisplay></CartDisplay>
-    <div class="user" @click="toggleLogin">
+    <div class="user" @click="checkLogin">
       <!-- to implement "toggleLogin" -> when click show login form -->
       <img
         class="user__child"
         id="user__picture"
-        src="/assets//person.svg"
+        src="../assets//person.svg"
         alt=""
       />
       <div class="user__child user__child--container">
-        <span>{{ userData }}</span>
+        <span>{{ userDisplay }}</span>
         <!-- userData -> if user is not logged in show Login? and if it's logged in show USERNAME of user -->
-        <img class="user__child" src="/assets/caret.svg" alt="" />
+        <img class="user__child" src="../assets/caret.svg" alt="" />
       </div>
-      <div class="login" v-show="loginDisplay">
+      <div class="login" v-show="loginDisplay" @click.stop>
         <!-- same as Cart Display -->
         <h2 class="login__title">Login</h2>
         <!-- V-MODEL THE FORM !!!! -->
@@ -56,15 +57,19 @@
           <form @submit.prevent="submitLogin" class="">
             <div class="login__username">
               <label for="username">Username</label>
-              <input type="text" id="username" />
+              <input v-model="userData.username" type="text" id="username" />
             </div>
             <div class="login__password">
               <label for="password">Password</label>
-              <input type="password" id="password" />
+              <input
+                v-model="userData.password"
+                type="password"
+                id="password"
+              />
             </div>
             <input type="submit" value="Login" />
           </form>
-          <em class="info">*please input data</em>
+          <em class="info" v-show="error">{{ error }}</em>
         </div>
       </div>
     </div>
@@ -72,18 +77,61 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/userStore";
 import CartDisplay from "../components/CartDisplay.vue";
 export default {
   name: "NavBar",
   data() {
     return {
-      loginDisplay: true,
+      loginDisplay: false,
+      error: null,
+      userDisplay: "Login",
+      userData: {
+        username: "",
+        password: "",
+      },
     };
+  },
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
   },
   components: { CartDisplay },
   methods: {
     submitLogin() {
-      this.$router.push("/admin");
+      console.log(this.userData);
+      this.userStore
+        .login(this.userData)
+        .then(() => {
+          this.userDisplay = this.userStore.username;
+          this.loginDisplay = false;
+          this.$router.push("/admin");
+        })
+        .catch((error) => {
+          this.error = error;
+        });
+    },
+    checkLogin() {
+      if (this.userStore.loggedIn) {
+        this.$router.push("/admin");
+      } else {
+        let refresh_token = localStorage.getItem("refresh_token");
+        if (refresh_token) {
+          // refreshing the token
+          this.userStore
+            .refresh_token()
+            .then(() => {
+              this.userDisplay = this.userStore.username;
+              console.log("pushadmin");
+              this.$router.push("/admin");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          this.loginDisplay = true;
+        }
+      }
     },
   },
 };
@@ -193,5 +241,8 @@ nav {
 
 .login__form input {
   margin: 5px 0;
+}
+em.info {
+  display: block;
 }
 </style>
