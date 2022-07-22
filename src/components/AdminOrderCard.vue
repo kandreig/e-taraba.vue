@@ -1,63 +1,36 @@
 <template>
   <div>
     <div>
-      <h3>ID</h3>
+      <label>id</label>
       <p>{{ card.id }}</p>
     </div>
     <div>
-      <h3>NAME</h3>
-      <p class="scroll">
-        {{ card.name }}
+      <label>Customer fullname</label>
+      <p>
+        {{ card.customerFirstName + " " + card.customerLastName }}
       </p>
     </div>
     <div>
-      <h3>PHOTO</h3>
-      <img class="square" :src="localhost + card.photoId + '.jpg'" alt="" />
-    </div>
-    <div>
-      <h3>DESCRIPTION</h3>
-      <p class="scroll">
-        {{ card.description }}
+      <label>Customer phone</label>
+      <p>
+        {{ card.customerPhone }}
       </p>
     </div>
     <div>
-      <h3>QUANTITY</h3>
-      <p>{{ card.quantity }} <i>pcs</i></p>
+      <label>Total amount of order: </label>
+      <p>{{ card.total }} <i>pcs</i></p>
     </div>
-    <div>
-      <h3>PHOTO ID</h3>
-      <p>{{ card.photoId }}</p>
-    </div>
-    <div>
-      <h3>PHOTO PAHT</h3>
-      <p>{{ card.photoFolderPath }}</p>
-    </div>
-    <div>
-      <h3>PRICE</h3>
-      <p>{{ card.price }}<i>$</i></p>
-    </div>
-    <button
-      class="content card__put"
-      @click="click_update_order_not_implemented"
-    >
-      PUT
-    </button>
-    <button
-      class="content card__delete"
-      @click="click_delete_order_not_implemented"
-    >
-      DELETE
-    </button>
+    <button @click="click_update_order_not_implemented">PUT</button>
+    <button @click="click_delete_order_not_implemented">DELETE</button>
+    <button @click="click_details_order_not_implemented">see details</button>
   </div>
 </template>
 
 <script>
-import { useProductStore } from "@/stores/productStore";
-import { useUserStore } from "@/stores/userStore";
-import ProductPutForm from "@/components/Forms/ProductPutForm.vue";
+import { useOrderStore } from "@/stores/orderStore";
 
 export default {
-  name: "AdminProductCard",
+  name: "AdminOrderCard",
   components: { ProductPutForm },
   props: {
     card: {
@@ -65,16 +38,12 @@ export default {
     },
   },
   data() {
-    return {
-      localhost: "https://localhost:44379/images/",
-      putFormVisibility: false,
-    };
+    return {};
   },
   setup() {
-    const productStore = useProductStore();
-    const userStore = useUserStore();
+    const orderStore = useOrderStore();
 
-    return { productStore, userStore };
+    return { orderStore };
   },
   methods: {
     deleteProduct() {

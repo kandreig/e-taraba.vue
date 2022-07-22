@@ -46,7 +46,10 @@
           POST
         </button>
       </div>
-      <div class="db__results" v-if="this.productStore.cards">
+      <div
+        class="db__results"
+        v-if="this.productStore.cards && this.selectedTable === 'products'"
+      >
         <AdminProductCard
           v-for="(card, index) in this.productStore.cards"
           :key="index"
@@ -56,16 +59,20 @@
       </div>
     </main>
   </div>
-  <PostForm v-if="postFormVisibility" @close="hideForm"></PostForm>
+  <ProductPostForm
+    v-if="postFormVisibility"
+    @close="hideForm"
+  ></ProductPostForm>
 </template>
 
 <script>
 import { useProductStore } from "@/stores/productStore";
+import { useOrderStore } from "@/stores/orderStore";
 import AdminProductCard from "../components/AdminProductCard.vue";
-import PostForm from "../components/Forms/ProductPostForm.vue";
+import ProductPostForm from "../components/Forms/ProductPostForm.vue";
 export default {
   name: "AdminView",
-  components: { AdminProductCard, PostForm },
+  components: { AdminProductCard, ProductPostForm },
   data() {
     return {
       selectedTable: "products",
@@ -75,7 +82,8 @@ export default {
   },
   setup() {
     const productStore = useProductStore();
-    return { productStore };
+    const orderStore = useOrderStore();
+    return { productStore, orderStore };
   },
   methods: {
     test(index) {
@@ -94,7 +102,7 @@ export default {
         this.productStore
           .getProducts()
           .then(() => {
-            console.log("get cards was gooood");
+            console.log("get products success");
           })
           .catch((error) => {
             console.log(error);
@@ -102,6 +110,14 @@ export default {
         return;
       }
       if (selectedTable === "orders") {
+        this.orderStore
+          .getOrders()
+          .then(() => {
+            console.log("get orders success");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         return;
       }
       if (selectedTable === "productorder") {

@@ -50,4 +50,7 @@ export default {
       },
     });
   },
+  get_orders() {
+    return apiClient.get("/api/orders");
+  },
 };

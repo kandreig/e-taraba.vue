@@ -3,8 +3,19 @@ import axiosService from "../services/axiosApi";
 
 export const useOrderStore = defineStore("orderStore", {
   state() {
-    return {};
+    return { orders: [] };
   },
   getters: {},
-  actions: {},
+  actions: {
+    getOrders() {
+      return axiosService
+        .get_orders()
+        .then((response) => {
+          this.orders = response.data.orders;
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+  },
 });
