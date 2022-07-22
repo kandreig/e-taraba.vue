@@ -48,6 +48,7 @@ a {
   text-decoration: none;
   color: #333;
 }
+
 nav,
 aside,
 main,
@@ -57,9 +58,31 @@ header {
   border: 1px solid gray;
   padding: 20px;
 }
+
 footer {
   position: sticky;
   bottom: 0;
   height: 50px;
+}
+
+.modal-form-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.error {
+  color: red;
+  font: 0.7em;
+}
+
+.border-red {
+  border: 1px solid red;
 }
 </style>

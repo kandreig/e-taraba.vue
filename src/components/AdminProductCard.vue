@@ -2,48 +2,83 @@
   <div class="db__card">
     <div class="content id">
       <h3>ID</h3>
-      <p>1</p>
+      <p>{{ card.id }}</p>
     </div>
     <div class="content name">
       <h3>NAME</h3>
       <p class="scroll">
-        {{ itemName }}
+        {{ card.name }}
       </p>
     </div>
     <div class="content photo">
       <h3>PHOTO</h3>
-      <img class="square" src="photoPath" alt="" />
+      <img class="square" :src="localhost + card.photoId + '.jpg'" alt="" />
     </div>
     <div class="content description">
       <h3>DESCRIPTION</h3>
       <p class="scroll">
-        {{ itemDescription }}
+        {{ card.description }}
       </p>
     </div>
     <div class="content quantity">
       <h3>QUANTITY</h3>
-      <p>{{ itemQuantityInDatabase }} <i>pcs</i></p>
+      <p>{{ card.quantity }} <i>pcs</i></p>
     </div>
     <div class="content photo__id">
       <h3>PHOTO ID</h3>
-      <p>{{ photoId }}</p>
+      <p>{{ card.photoId }}</p>
     </div>
     <div class="content path">
       <h3>PHOTO PAHT</h3>
-      <p>{{ photosDefaultPath }}</p>
+      <p>{{ card.photoFolderPath }}</p>
     </div>
     <div class="content price">
       <h3>PRICE</h3>
-      <p>{{ itemPrice }}<i>$</i></p>
+      <p>{{ card.price }}<i>$</i></p>
     </div>
-    <button class="content card__put" @click="$emit('put-item')">PUT</button>
-    <button class="content card__delete">DELETE</button>
+    <button class="content card__put" @click="toggleFormVisibile">PUT</button>
+    <button class="content card__delete" @click="deleteProduct">DELETE</button>
   </div>
+  <ProductPutForm
+    v-if="putFormVisibility"
+    :card="card"
+    @close="this.putFormVisibility = !this.putFormVisibility"
+  ></ProductPutForm>
 </template>
 
 <script>
+import { useProductStore } from "@/stores/productStore";
+import { useUserStore } from "@/stores/userStore";
+import ProductPutForm from "@/components/Forms/ProductPutForm.vue";
+
 export default {
   name: "AdminProductCard",
+  components: { ProductPutForm },
+  props: {
+    card: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      localhost: "https://localhost:44379/images/",
+      putFormVisibility: false,
+    };
+  },
+  setup() {
+    const productStore = useProductStore();
+    const userStore = useUserStore();
+
+    return { productStore, userStore };
+  },
+  methods: {
+    deleteProduct() {
+      this.productStore.deleteProduct(this.card);
+    },
+    toggleFormVisibile() {
+      this.putFormVisibility = true;
+    },
+  },
 };
 </script>
 
@@ -71,7 +106,12 @@ export default {
   margin-block: 5px;
 }
 
+.content h3 {
+  margin-right: 15px;
+}
+
 .scroll {
+  width: 100%;
   line-height: 1.3rem;
   height: 3.9rem;
   overflow-x: hidden;

@@ -8,13 +8,37 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
-    meta: { requiresAuth: false },
+    // meta: { requiresAuth: false },
   },
   {
     path: "/admin",
     name: "admin",
     component: AdminView,
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
+    beforeEnter: (to, from, next) => {
+      const store = useUserStore();
+
+      store
+        .check_token()
+        .then(() => {
+          // console.log("meta: " + to.meta.requiresAuth);
+          // console.log("loggedin: " + store.loggedIn);
+          // if (!store.loggedIn) {
+          // next("/");
+          // } else {
+          next();
+          // }
+        })
+        .catch(() => {
+          // console.log("meta: " + to.meta.requiresAuth);
+          // console.log("loggedin: " + store.loggedIn);
+          // if (!store.loggedIn) {
+          next("/");
+          // } else {
+          // next();
+          // }
+        });
+    },
   },
   {
     path: "/about",
@@ -32,15 +56,29 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const store = useUserStore();
-  console.log("meta: " + to.meta.requiresAuth);
-  console.log("loggedin: " + store.loggedIn);
-  if (to.meta.requiresAuth && !store.loggedIn) {
-    next("/");
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const store = useUserStore();
+
+//   store
+//     .check_token()
+//     .then(() => {
+//       console.log("meta: " + to.meta.requiresAuth);
+//       console.log("loggedin: " + store.loggedIn);
+//       if (to.meta.requiresAuth && !store.loggedIn) {
+//         next("/");
+//       } else {
+//         next();
+//       }
+//     })
+//     .catch(() => {
+//       console.log("meta: " + to.meta.requiresAuth);
+//       console.log("loggedin: " + store.loggedIn);
+//       if (to.meta.requiresAuth && !store.loggedIn) {
+//         next("/");
+//       } else {
+//         next();
+//       }
+//     });
+// });
 
 export default router;

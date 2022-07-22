@@ -54,7 +54,7 @@
         <h2 class="login__title">Login</h2>
         <!-- V-MODEL THE FORM !!!! -->
         <div class="login__form">
-          <form @submit.prevent="submitLogin" class="">
+          <form @submit.prevent="submitLogin">
             <div class="login__username">
               <label for="username">Username</label>
               <input v-model="userData.username" type="text" id="username" />
@@ -99,7 +99,6 @@ export default {
   components: { CartDisplay },
   methods: {
     submitLogin() {
-      console.log(this.userData);
       this.userStore
         .login(this.userData)
         .then(() => {
@@ -112,25 +111,10 @@ export default {
         });
     },
     checkLogin() {
-      if (this.userStore.loggedIn) {
-        this.$router.push("/admin");
+      if (localStorage.getItem("refresh_token")) {
+        this.$router.push({ name: "admin" });
       } else {
-        let refresh_token = localStorage.getItem("refresh_token");
-        if (refresh_token) {
-          // refreshing the token
-          this.userStore
-            .refresh_token()
-            .then(() => {
-              this.userDisplay = this.userStore.username;
-              console.log("pushadmin");
-              this.$router.push("/admin");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          this.loginDisplay = true;
-        }
+        this.loginDisplay = true;
       }
     },
   },

@@ -3,39 +3,60 @@
     <div class="inner">
       <strong @click="$emit('close')">X</strong>
       <div class="content name">
-        <h3>NAME</h3>
-        <textarea
+        <BaseTextarea
           v-model="product.Name"
-          name=""
-          id=""
-          cols="30"
-          rows="3"
-        ></textarea>
+          label="Numele produsului"
+          id="textarea-name"
+        ></BaseTextarea>
       </div>
       <div class="content description">
-        <h3>DESCRIPTION</h3>
-        <textarea
+        <BaseTextarea
           v-model="product.Description"
-          name=""
-          id=""
-          cols="30"
-          rows="3"
-        ></textarea>
+          label="Descrierea produsului"
+          id="textarea-description"
+        ></BaseTextarea>
       </div>
+
       <div class="content quantity">
-        <h3>QUANTITY</h3>
-        <input v-model="product.Quantity" type="number" name="" id="" />
+        <BaseInput
+          v-model="product.Quantity"
+          id="input-number-quantity"
+          label="enter number of items"
+          type="number"
+        ></BaseInput>
       </div>
+
       <div class="content photo">
-        <h3>PHOTO</h3>
-        <img class="square" :src="url" />
-        <input type="file" name="" id="" @change="file" />
+        <BaseInputFileImage
+          v-model="product.Image"
+          label="Insert Product Image"
+          id="product-image"
+        ></BaseInputFileImage>
       </div>
       <div class="content price">
-        <h3>PRICE</h3>
-        <input v-model="product.Price" type="number" name="" id="" />
+        <BaseInput
+          v-model="product.Price"
+          type="Number"
+          id="input-number-price"
+          label="Price of product"
+        ></BaseInput>
       </div>
-      <button @click="sendData" class="content card__put">Post || Put</button>
+
+      <button
+        v-if="type == 'post'"
+        @click="createProduct"
+        class="content card__put"
+      >
+        Post
+      </button>
+      <button
+        v-if="type == 'put'"
+        @click="updateProduct"
+        class="content card__put"
+      >
+        Put
+      </button>
+      <pre>{{ product }}</pre>
     </div>
   </form>
 </template>
@@ -43,19 +64,27 @@
 <script>
 import { useUserStore } from "@/stores/userStore";
 import { useProductStore } from "@/stores/productStore";
+import BaseTextarea from "@/components/BaseFormComponents/BaseTextarea.vue";
+import BaseInput from "@/components/BaseFormComponents/BaseInput.vue";
+import BaseInputFileImage from "@/components/BaseFormComponents/BaseInputFileImage.vue";
 
 export default {
+  components: { BaseTextarea, BaseInput, BaseInputFileImage },
   name: "PostForm",
+  props: {
+    type: String,
+    card: Object,
+  },
   data() {
     return {
       product: {
-        Name: null,
-        Description: null,
-        Quantity: null,
+        Name: this.card.name,
+        Description: this.card.description,
+        Quantity: this.card.quantity,
         Image: null,
-        Price: null,
+        Price: this.card.price,
       },
-      url: null,
+      url: "https://localhost:44379/images/" + this.card.photoId + ".jpg",
     };
   },
   setup() {
@@ -64,7 +93,7 @@ export default {
     return { userStore, productStore };
   },
   methods: {
-    sendData() {
+    createProduct() {
       // this.product.PhotoId = uuidv4();
       // this.product.PhotoFolderPath = "d://";
 
@@ -80,51 +109,14 @@ export default {
       this.productStore.createProduct(formData, this.userStore.accessToken);
       this.$emit("close");
     },
-
-    file(e) {
-      let file = e.target.files[0];
-
-      if (!file || file.type.indexOf("image/") !== 0) {
-        alert("not image, file empty");
-        return;
-      }
-      let fileSizeInMb = file.size / 1048576;
-
-      if (fileSizeInMb > 1) {
-        alert("image to big, must be smaller than 2mb");
-        return;
-      }
-      this.url = URL.createObjectURL(file);
-      this.product.Image = file;
-
-      // let reader = new FileReader();
-
-      // reader.readAsDataURL(file);
-      // reader.onload = (evt) => {
-      //   let img = new Image();
-      //   img.onload = () => {
-      //     if (
-      //       img.width > 500 ||
-      //       img.heigth > 500 ||
-      //       img.width < 150 ||
-      //       img.height < 150
-      //     ) {
-      //       alert(
-      //         "image size not optimal, please resize between 200x200 - 500x500"
-      //       );
-      //     } else {
-      //       this.url = URL.createObjectURL(file);
-      //       this.product.Image = file;
-      //     }
-      //     // alert("width:" + img.width);
-      //     // alert("heigth:" + img.height);
-      //   };
-      //   img.src = evt.target.result;
-      // };
-
-      // reader.onerror = (evt) => {
-      //   console.error(evt);
-      // };
+    updateProduct() {
+      console.log(this.product);
+      this.productStore.updateCard(
+        this.card.id,
+        this.userStore.accessToken,
+        this.product
+      );
+      this.$emit("close");
     },
   },
 };

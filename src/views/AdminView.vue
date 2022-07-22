@@ -1,8 +1,37 @@
 <template>
   <div class="admin">
     <aside class="aside">
-      <div class="tables" v-for="(table, index) in tables" :key="index">
-        <h5 class="table" @click="test(index)">{{ table }}</h5>
+      <div class="tables">
+        <div class="table">
+          <input
+            v-model="selectedTable"
+            type="radio"
+            id="products"
+            value="products"
+            checked
+          />
+          <label for="products"> <strong>Products Table</strong> </label>
+        </div>
+        <div class="table">
+          <input
+            v-model="selectedTable"
+            type="radio"
+            id="orders"
+            value="orders"
+          />
+          <label for="orders"> <strong>Orders Table</strong> </label>
+        </div>
+        <div class="table">
+          <input
+            v-model="selectedTable"
+            type="radio"
+            id="productorder"
+            value="productorder"
+          />
+          <label for="productorder">
+            <strong>Product Order Table</strong>
+          </label>
+        </div>
       </div>
     </aside>
     <main class="main">
@@ -12,41 +41,72 @@
           class="db__search"
           placeholder="search item in database"
         />
-        <button class="search__button">GET</button>
-        <button class="search__button" @click="displayPostForm">POST</button>
+        <button class="search__button" @click="getCardsFromDb">GET</button>
+        <button class="search__button" @click="togglePostFormVisible">
+          POST
+        </button>
       </div>
-      <div class="db__results">
-        <AdminProductCard @put-item="putItem"></AdminProductCard>
+      <div class="db__results" v-if="this.productStore.cards">
+        <AdminProductCard
+          v-for="(card, index) in this.productStore.cards"
+          :key="index"
+          :card="card"
+        ></AdminProductCard>
+        <!-- :card e prop -->
       </div>
     </main>
   </div>
-  <Form v-if="showForm" @close="hideForm"></Form>
+  <PostForm v-if="postFormVisibility" @close="hideForm"></PostForm>
 </template>
 
 <script>
+import { useProductStore } from "@/stores/productStore";
 import AdminProductCard from "../components/AdminProductCard.vue";
-import Form from "../components/Forms/PostForm.vue";
+import PostForm from "../components/Forms/ProductPostForm.vue";
 export default {
   name: "AdminView",
-  components: { AdminProductCard, Form },
+  components: { AdminProductCard, PostForm },
   data() {
     return {
-      tables: ["Products", "Orders", "ProductOrderDetails"],
-      showForm: null,
+      selectedTable: "products",
+      postFormVisibility: null,
+      type: null,
     };
+  },
+  setup() {
+    const productStore = useProductStore();
+    return { productStore };
   },
   methods: {
     test(index) {
       console.log(index);
     },
     hideForm() {
-      this.showForm = false;
+      this.postFormVisibility = false;
     },
-    displayPostForm() {
-      this.showForm = true;
+    togglePostFormVisible() {
+      this.type = "post";
+      this.postFormVisibility = true;
     },
-    putItem() {
-      this.showForm = true;
+    getCardsFromDb() {
+      const selectedTable = this.selectedTable;
+      if (selectedTable === "products") {
+        this.productStore
+          .getProducts()
+          .then(() => {
+            console.log("get cards was gooood");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        return;
+      }
+      if (selectedTable === "orders") {
+        return;
+      }
+      if (selectedTable === "productorder") {
+        return;
+      }
     },
   },
 };
@@ -64,7 +124,7 @@ export default {
   background-color: #f2f2f7;
 }
 .tables {
-  text-align: center;
+  text-align: start;
 }
 .table {
   font-weight: 800;
