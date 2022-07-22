@@ -20,9 +20,13 @@
       <label>Total amount of order: </label>
       <p>{{ card.total }} <i>pcs</i></p>
     </div>
-    <button @click="click_update_order_not_implemented">PUT</button>
-    <button @click="click_delete_order_not_implemented">DELETE</button>
     <button @click="click_details_order_not_implemented">see details</button>
+    <!-- <div>
+      <h4>Order details:</h4>
+      <label>Number of products:</label>
+      <p>{{ this.productorderDetails.numberOfProductsForOrder }}</p>
+      <ProductOfOrder.. v-for.. ></ProductOfOrder>
+    </div> -->
   </div>
 </template>
 
@@ -31,7 +35,7 @@ import { useOrderStore } from "@/stores/orderStore";
 
 export default {
   name: "AdminOrderCard",
-  components: { ProductPutForm },
+  components: {},
   props: {
     card: {
       type: Object,

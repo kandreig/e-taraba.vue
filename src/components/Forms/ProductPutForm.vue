@@ -1,9 +1,9 @@
 <template>
   <form class="modal-form-wrapper">
-    <div class="product-form">
+    <div class="form">
       <strong @click="$emit('close')">X</strong>
-      <h2 class="product-form__title">Update product</h2>
-      <div class="product-form__field">
+      <h2 class="form__title">Update product</h2>
+      <div class="form__field">
         <BaseTextarea
           v-model="product.Name"
           label="Name"
@@ -11,7 +11,7 @@
           :errsMsg="errors.textarea_name"
         ></BaseTextarea>
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseTextarea
           v-model="product.Description"
           label="Description"
@@ -20,7 +20,7 @@
         ></BaseTextarea>
       </div>
 
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInput
           v-model="product.Quantity"
           id="input-number-quantity"
@@ -29,19 +29,19 @@
           :errsMsg="errors.input_quantity"
         ></BaseInput>
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <label>Old image of Product</label>
         <img class="product__old-image" :src="old_image" alt="" />
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInputFileImage
           v-model="product.Image"
           label="New product image"
-          id="product-image"
+          id="image"
           :errsMsg="errors.input_image"
         ></BaseInputFileImage>
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInput
           v-model="product.Price"
           type="Number"
@@ -221,103 +221,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.content:nth-child(odd) {
-  background-color: #dddd;
-}
-.content > * {
-  vertical-align: middle;
-  display: inline-block;
-}
-.content {
-  margin-block: 5px;
-}
-
-.scroll {
-  line-height: 1.3rem;
-  height: 3.9rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding: 5px;
-  margin-bottom: 5px;
-  box-shadow: 1px 1px 3px 1px #333;
-}
-
-.right__side > * {
-  width: 100%;
-  display: block;
-}
-
-.db__search {
-  width: 20%;
-}
-
-.search__button {
-  width: 5%;
-}
-
-img.square {
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  width: 100px;
-}
-
-button {
-  border: none;
-  display: inline-block;
-}
-
-.card__put {
-  background-color: lightblue !important;
-}
-.card__delete {
-  background-color: rgb(253, 72, 72) !important;
-}
-
-textarea {
-  display: block !important;
-}
-
-form {
-  width: 400px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-*,
-::before,
-::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-.inner {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 500px;
-  padding: 10px;
-  background: white;
-  max-width: 500px;
-  margin: 2rem auto;
-}
-strong {
-  color: red;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-  margin: 10px;
-}
-.inner input {
-  margin-inline: 10px;
-}
-</style>

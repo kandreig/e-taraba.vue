@@ -1,8 +1,8 @@
 <template>
   <form class="modal-form-wrapper">
-    <div class="product-form">
-      <h2 class="product-form__title">Post product</h2>
-      <div class="product-form__field">
+    <div class="form">
+      <h2 class="form__title">Post product</h2>
+      <div class="form__field">
         <BaseTextarea
           v-model="product.Name"
           label="Name"
@@ -10,7 +10,7 @@
           :errsMsg="errors.textarea_name"
         ></BaseTextarea>
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseTextarea
           v-model="product.Description"
           label="Description"
@@ -20,7 +20,7 @@
         ></BaseTextarea>
       </div>
 
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInput
           v-model="product.Quantity"
           id="input-number-quantity"
@@ -30,15 +30,15 @@
         ></BaseInput>
       </div>
 
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInputFileImage
           v-model="product.Image"
           label="Select image"
-          id="product-image"
+          id="image"
           :errsMsg="errors.input_image"
         ></BaseInputFileImage>
       </div>
-      <div class="product-form__field">
+      <div class="form__field">
         <BaseInput
           v-model="product.Price"
           type="Number"
@@ -48,16 +48,16 @@
         ></BaseInput>
       </div>
 
-      <div class="product-form__button-wrapper">
+      <div class="form__button-wrapper">
         <button
           @click.prevent="createProduct"
-          class="product-form__button product-form__button--post"
+          class="form__button form__button--post"
         >
           Post
         </button>
         <button
           @click="$emit('close')"
-          class="product-form__button product-form__button--cancel"
+          class="form__button form__button--cancel"
         >
           Cancel
         </button>
@@ -182,64 +182,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.product-form {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 500px;
-  padding: 30px;
-  background: white;
-  max-width: 500px;
-  margin: 2rem auto;
-}
-
-.product-form__field {
-  display: inline-flex;
-  flex-direction: column;
-  margin-block: 1em;
-}
-
-.product-form__field label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #666666;
-}
-
-.product-form__field input,
-.product-form__field textarea {
-  font-size: 1.1rem;
-}
-.product-form__field img {
-  max-width: 200px;
-  max-height: 200px;
-}
-.product-form__field input[type="number"] {
-  align-self: flex-start;
-  text-align: center;
-}
-.product-form__field input[type="file"] {
-  font-size: 1rem;
-}
-.product-form__button {
-  width: 70px;
-  border: none;
-  border-radius: 3px;
-  align-self: flex-start;
-  padding-inline: auto;
-  padding-block: 2px;
-
-  margin-block: 10px;
-  margin-right: 10px;
-  font-size: 1rem;
-  color: white;
-}
-.product-form__button--post {
-  background-color: limegreen;
-}
-.product-form__button--cancel {
-  background-color: red;
-}
-</style>

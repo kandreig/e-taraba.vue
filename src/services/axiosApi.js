@@ -51,6 +51,10 @@ export default {
     });
   },
   get_orders() {
-    return apiClient.get("/api/orders");
+    return apiClient.get("/api/orders", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
   },
 };

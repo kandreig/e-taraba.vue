@@ -21,7 +21,7 @@
           />
           <label for="orders"> <strong>Orders Table</strong> </label>
         </div>
-        <div class="table">
+        <!-- <div class="table">
           <input
             v-model="selectedTable"
             type="radio"
@@ -30,8 +30,8 @@
           />
           <label for="productorder">
             <strong>Product Order Table</strong>
-          </label>
-        </div>
+          </label> -->
+        <!-- </div> -->
       </div>
     </aside>
     <main class="main">
@@ -42,7 +42,11 @@
           placeholder="search item in database"
         />
         <button class="search__button" @click="getCardsFromDb">GET</button>
-        <button class="search__button" @click="togglePostFormVisible">
+        <button
+          class="search__button"
+          @click="togglePostFormVisible"
+          v-if="this.selectedTable === 'products'"
+        >
           POST
         </button>
       </div>
@@ -57,10 +61,21 @@
         ></AdminProductCard>
         <!-- :card e prop -->
       </div>
+      <div
+        class="db__results"
+        v-if="this.orderStore.orders && this.selectedTable === 'orders'"
+      >
+        <AdminOrderCard
+          v-for="(card, index) in this.orderStore.orders"
+          :key="index"
+          :card="card"
+        ></AdminOrderCard>
+        <!-- :card e prop -->
+      </div>
     </main>
   </div>
   <ProductPostForm
-    v-if="postFormVisibility"
+    v-if="postFormVisibilityAndType === 'products'"
     @close="hideForm"
   ></ProductPostForm>
 </template>
@@ -69,15 +84,15 @@
 import { useProductStore } from "@/stores/productStore";
 import { useOrderStore } from "@/stores/orderStore";
 import AdminProductCard from "../components/AdminProductCard.vue";
+import AdminOrderCard from "../components/AdminOrderCard.vue";
 import ProductPostForm from "../components/Forms/ProductPostForm.vue";
 export default {
   name: "AdminView",
-  components: { AdminProductCard, ProductPostForm },
+  components: { AdminProductCard, ProductPostForm, AdminOrderCard },
   data() {
     return {
       selectedTable: "products",
-      postFormVisibility: null,
-      type: null,
+      postFormVisibilityAndType: null,
     };
   },
   setup() {
@@ -90,11 +105,10 @@ export default {
       console.log(index);
     },
     hideForm() {
-      this.postFormVisibility = false;
+      this.postFormVisibilityAndType = false;
     },
     togglePostFormVisible() {
-      this.type = "post";
-      this.postFormVisibility = true;
+      this.postFormVisibilityAndType = this.selectedTable;
     },
     getCardsFromDb() {
       const selectedTable = this.selectedTable;
@@ -118,9 +132,6 @@ export default {
           .catch((error) => {
             console.log(error);
           });
-        return;
-      }
-      if (selectedTable === "productorder") {
         return;
       }
     },
@@ -162,5 +173,66 @@ export default {
 
 .search__button {
   width: 5%;
+}
+</style>
+<style>
+/* style for forms */
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  padding: 30px;
+  background: white;
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.form__field {
+  display: inline-flex;
+  flex-direction: column;
+  margin-block: 1em;
+}
+
+.form__field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666666;
+}
+
+.form__field input,
+.form__field textarea {
+  font-size: 1.1rem;
+}
+.form__field img {
+  max-width: 200px;
+  max-height: 200px;
+}
+.form__field input[type="number"] {
+  align-self: flex-start;
+  text-align: center;
+}
+.form__field input[type="file"] {
+  font-size: 1rem;
+}
+.form__button {
+  width: 70px;
+  border: none;
+  border-radius: 3px;
+  align-self: flex-start;
+  padding-inline: auto;
+  padding-block: 2px;
+
+  margin-block: 10px;
+  margin-right: 10px;
+  font-size: 1rem;
+  color: white;
+}
+.form__button--post {
+  background-color: limegreen;
+}
+.form__button--cancel {
+  background-color: red;
 }
 </style>
