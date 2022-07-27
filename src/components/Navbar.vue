@@ -14,6 +14,7 @@
         type="text"
         id="search__bar__text"
         placeholder="Search product"
+        v-model="searchQuery"
       /><button
         class="search__bar__child"
         id="search__bar__button"
@@ -26,16 +27,24 @@
         />
       </button>
     </form>
-    <div class="cart" @click="toggleCart">
+    <div
+      class="cart"
+      @click="this.cartDisplayVisibility = !this.cartDisplayVisibility"
+    >
       <!-- To implement "toggleCart" -->
-      <img class="cart__img" src="/assets/cart.svg" alt="" /><span
+      <img class="cart__img" src="@/assets/cart.svg" alt="" /><span
         class="cart--nr__items"
-        v-if="cartItems"
-        >{{ cartItems }}</span
+        v-if="this.cartStore.numberOfItemsInCart"
+        >{{ this.cartStore.numberOfItemsInCart }}</span
       >
       <!-- To implement "cartItems logic" -->
+      <CartDisplay
+        v-show="cartDisplayVisibility && this.cartStore.numberOfItemsInCart"
+        @click.stop
+        @mouseleave="this.cartDisplayVisibility = false"
+      ></CartDisplay>
     </div>
-    <CartDisplay></CartDisplay>
+
     <div class="user" @click="checkLogin">
       <!-- to implement "toggleLogin" -> when click show login form -->
       <img
@@ -79,22 +88,28 @@
 <script>
 import { useUserStore } from "../stores/userStore";
 import CartDisplay from "../components/CartDisplay.vue";
+import { useCartStore } from "@/stores/cartStore";
+import { useProductStore } from "@/stores/productStore";
 export default {
   name: "NavBar",
   data() {
     return {
       loginDisplay: false,
       error: null,
-      userDisplay: "Login",
+      userDisplay: localStorage.getItem("name") || "login",
       userData: {
         username: "",
         password: "",
       },
+      cartDisplayVisibility: false,
+      searchQuery: "",
     };
   },
   setup() {
     const userStore = useUserStore();
-    return { userStore };
+    const cartStore = useCartStore();
+    const productStore = useProductStore();
+    return { userStore, cartStore, productStore };
   },
   components: { CartDisplay },
   methods: {
@@ -102,7 +117,7 @@ export default {
       this.userStore
         .login(this.userData)
         .then(() => {
-          this.userDisplay = this.userStore.username;
+          this.userDisplay = localStorage.getItem("name");
           this.loginDisplay = false;
           this.$router.push("/admin");
         })
@@ -114,7 +129,14 @@ export default {
       if (localStorage.getItem("refresh_token")) {
         this.$router.push({ name: "admin" });
       } else {
-        this.loginDisplay = true;
+        this.loginDisplay = !this.loginDisplay;
+      }
+    },
+    searchSubmit() {
+      if (this.searchQuery !== "") {
+        return this.productStore.getProductsWithSearchQuery(this.searchQuery);
+      } else {
+        return this.productStore.getProducts();
       }
     },
   },
@@ -125,6 +147,7 @@ export default {
 nav {
   height: 60px;
   position: sticky;
+  z-index: 1;
   top: 0;
   display: flex;
   align-items: center;

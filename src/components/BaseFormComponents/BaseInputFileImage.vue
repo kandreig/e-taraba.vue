@@ -1,7 +1,12 @@
 <template>
   <label :for="id">{{ label }}</label>
   <img :src="url" />
-  <input type="file" :id="id" @change="previewImage" accept="image/*" />
+  <input
+    type="file"
+    :id="id"
+    @change="previewImage"
+    accept="image/png, image/jpeg"
+  />
   <em class="error" v-for="(error, index) in errsMsg" :key="index">{{
     error
   }}</em>
@@ -41,10 +46,10 @@ export default {
   methods: {
     previewImage(event) {
       let file = event.target.files[0];
-
-      if (!file || file.type.indexOf("image/") !== 0) {
-        this.errMsg = "file is not image, please select an image file";
-
+      console.log(file);
+      if (!file || file.type.indexOf("image/jpeg" || "image/png") !== 0) {
+        this.errMsg = "must input images with extension .jpg | .jpeg | .png";
+        this.url = "";
         return;
       }
       let fileSizeInMb = file.size / 1048576;

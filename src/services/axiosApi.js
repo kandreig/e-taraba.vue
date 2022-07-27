@@ -36,6 +36,17 @@ export default {
   get_products() {
     return apiClient.get("/api/products");
   },
+  get_product_by_id(id) {
+    return apiClient.get(`/api/products/${id}`);
+  },
+  get_products_with_price_filter(minPrice, maxPrice) {
+    return apiClient.get(
+      `/api/products?PriceMin=${minPrice}&PriceMax=${maxPrice}`
+    );
+  },
+  get_products_with_search_query(searchQuery) {
+    return apiClient.get(`/api/products?SearchQuery=${searchQuery}`);
+  },
   delete_product(id) {
     return apiClient.delete(`/api/products/${id}`, {
       headers: {
@@ -56,5 +67,17 @@ export default {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
+  },
+  get_products_for_orderId(idOrder) {
+    return apiClient.get(`/api/products/order/${idOrder}`);
+  },
+  get_productorder_details_for_orderId(idOrder) {
+    return apiClient.get(`/api/productorder/order/${idOrder}`);
+  },
+  post_order(orderToPost) {
+    return apiClient.post("/api/orders", orderToPost);
+  },
+  post_productOrderDetails(productOrderDetailsToPost) {
+    return apiClient.post("/api/productorder", productOrderDetailsToPost);
   },
 };

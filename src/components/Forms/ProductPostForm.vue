@@ -30,10 +30,10 @@
         ></BaseInput>
       </div>
 
-      <div class="form__field">
+      <div class="form__field form__field__input-image">
         <BaseInputFileImage
           v-model="product.Image"
-          label="Select image"
+          label="Click here to insert image"
           id="image"
           :errsMsg="errors.input_image"
         ></BaseInputFileImage>
@@ -62,8 +62,6 @@
           Cancel
         </button>
       </div>
-
-      <pre>{{ product }}</pre>
     </div>
   </form>
 </template>
@@ -115,12 +113,16 @@ export default {
     },
     validateInput() {
       let error = false;
+      const MAX_LENGTH_NAME = 100;
+      const MAX_LENGTH_DESC = 5000;
+      const MAX_SIZE_QUANTITY = 50;
+      const MAX_SIZE_PRICE = 100000;
       //textarea name -- max 100 chars, not null
       if (this.product.Name === "") {
         error = true;
         this.errors.textarea_name.push("Name field must not be empty");
       }
-      if (this.product.Name.length > 100) {
+      if (this.product.Name.length > MAX_LENGTH_NAME) {
         error = true;
         this.errors.textarea_name.push(
           `Name field must not be bigger than 100 characters. ${this.product.Name.length}/100`
@@ -130,10 +132,10 @@ export default {
         error = true;
         this.errors.textarea_description.push("Name field must not be empty");
       }
-      if (this.product.Description.length > 255) {
+      if (this.product.Description.length > MAX_LENGTH_DESC) {
         error = true;
         this.errors.textarea_description.push(
-          `Name field must not be bigger than 255 characters. ${this.product.Description.length}/255`
+          `Name field must not be bigger than ${MAX_LENGTH_DESC} characters. ${this.product.Description.length}/${MAX_LENGTH_DESC}`
         );
       }
       if (this.product.Quantity === "" || this.product.Quantity === 0) {
@@ -142,10 +144,13 @@ export default {
           "Must give a quantity OR Invalid format. Correct format : integer"
         );
       }
-      if (this.product.Quantity > 500 || this.product.Quantity < 1) {
+      if (
+        this.product.Quantity > MAX_SIZE_QUANTITY ||
+        this.product.Quantity < 1
+      ) {
         error = true;
         this.errors.input_quantity.push(
-          "Quantity must not be greater than 500 and smaller than 1"
+          `Quantity must not be greater than ${MAX_SIZE_QUANTITY} and smaller than 1`
         );
       }
 
@@ -160,10 +165,10 @@ export default {
           "Must give a quantity OR Invalid format. Correct format : integer"
         );
       }
-      if (this.product.Price > 999999 || this.product.Price < 1) {
+      if (this.product.Price > MAX_SIZE_PRICE || this.product.Price < 1) {
         error = true;
         this.errors.input_price.push(
-          "Quantity must not be greater than 999999 and smaller than 1"
+          `Quantity must not be greater than ${MAX_SIZE_PRICE} and smaller than 1`
         );
       }
       return error;

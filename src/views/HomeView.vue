@@ -13,36 +13,82 @@
         <div class="search__parameters">
           <p class="search__parameters__price--title">Price</p>
 
-          <form class="search__parameters__form" action="nowhere">
+          <form
+            class="search__parameters__form"
+            @submit.prevent="filterProducts"
+          >
             <div class="search__parameters__price--input">
               <input
                 class="input__price"
                 type="text"
                 placeholder="min. price"
+                v-model="minPrice"
               /><span>-</span
               ><input
                 class="input__price"
                 type="text"
                 placeholder="max. price"
+                v-model="maxPrice"
               />
             </div>
             <button class="search__parameters__form__button">filter</button>
+            <button
+              class="search__parameters__form__button"
+              @click.prevent="resetProducts"
+            >
+              reset
+            </button>
           </form>
         </div>
       </div>
     </aside>
-    <main class="main">
-      <HomeProductCard></HomeProductCard>
+    <main v-if="this.productStore.cards" class="main">
+      <HomeProductCard
+        v-for="(card, index) in this.productStore.cards"
+        :key="index"
+        :card="card"
+      ></HomeProductCard>
     </main>
   </div>
 </template>
 
 <script>
+import { useProductStore } from "@/stores/productStore";
 // @ is an alias to /src
 import HomeProductCard from "../components/HomeProductCard.vue";
+
 export default {
   name: "HomeView",
   components: { HomeProductCard },
+  data() {
+    return {
+      minPrice: "",
+      maxPrice: "",
+    };
+  },
+  setup() {
+    const productStore = useProductStore();
+    return { productStore };
+  },
+  methods: {
+    filterProducts() {
+      let minPrice = this.minPrice;
+      let maxPrice = this.maxPrice;
+
+      if (minPrice === "" && maxPrice === "") {
+        return this.productStore.getProducts();
+      } else if (minPrice === "") {
+        return this.productStore.getProductsWithFilter(0, maxPrice);
+      } else if (maxPrice === "") {
+        return this.productStore.getProductsWithFilter(minPrice, 9999999);
+      } else {
+        return this.productStore.getProductsWithFilter(minPrice, maxPrice);
+      }
+    },
+    resetProducts() {
+      return this.productStore.getProducts();
+    },
+  },
 };
 </script>
 

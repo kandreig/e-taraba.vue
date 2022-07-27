@@ -1,19 +1,54 @@
 <template>
   <div class="card stacked">
-    <img src="photoPath" alt="" />
+    <img :src="photoPath" alt="" @click="goToProductDetails" />
     <div class="card__content">
-      <h2 class="card__title">
-        {{ itemTitle }}
+      <h2 class="card__title" @click="goToProductDetails">
+        {{ card.name }}
       </h2>
-      <p class="card__price">{{ itemPrice }}$</p>
-      <button class="card__addtocart">Add To Cart</button>
+      <p class="card__price">{{ card.price }}$</p>
+      <button
+        class="card__addtocart"
+        @click="addProductToCart"
+        v-if="card.quantity > 0"
+      >
+        Add To Cart
+      </button>
+      <button
+        class="card__addtocart card__addtocart--out-of-stock"
+        v-if="card.quantity <= 0"
+      >
+        Out of stock
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { useCartStore } from "@/stores/cartStore";
 export default {
   name: "HomeProductCard",
+  props: { card: Object },
+  data() {
+    return {
+      photoPath: "https://localhost:44379/images/" + this.card.photoId + ".jpg",
+    };
+  },
+  setup() {
+    const cartStore = useCartStore();
+    return { cartStore };
+  },
+  methods: {
+    addProductToCart() {
+      this.cartStore.pushProduct(this.card);
+    },
+    goToProductDetails() {
+      var cardId = this.card.id;
+      this.$router.push({
+        name: "productDetails",
+        params: { id: cardId, card: this.card },
+      });
+    },
+  },
 };
 </script>
 
@@ -32,6 +67,8 @@ export default {
 
 .stacked {
   display: grid;
+  height: 100%;
+  width: 100%;
 }
 
 .stacked > * {
@@ -59,6 +96,7 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  align-self: center;
 }
 .card__price {
   font-size: 1.5rem;
@@ -78,5 +116,8 @@ export default {
   border: none;
   border-radius: 10px;
   align-self: flex-end;
+}
+.card__addtocart--out-of-stock {
+  background-color: red;
 }
 </style>

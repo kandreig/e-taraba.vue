@@ -5,6 +5,7 @@ export const useProductStore = defineStore("productStore", {
   state() {
     return {
       cards: [],
+      cardToDisplay: {},
     };
   },
   getters: {},
@@ -39,11 +40,46 @@ export const useProductStore = defineStore("productStore", {
         });
     },
     getProducts() {
+      this.cards = [];
       return axiosService
         .get_products()
         .then((response) => {
           this.cards = response.data.products;
           console.log(response);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+    getProductById(id) {
+      return axiosService
+        .get_product_by_id(id)
+        .then((response) => {
+          this.cardToDisplay = response.data;
+          console.log("reqqq");
+          console.log(response);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+    getProductsWithFilter(minPrice, maxPrice) {
+      this.cards = [];
+      return axiosService
+        .get_products_with_price_filter(minPrice, maxPrice)
+        .then((response) => {
+          this.cards = response.data.products;
+        })
+        .catch((error) => {
+          throw error;
+        });
+    },
+    getProductsWithSearchQuery(searchQuery) {
+      this.cards = [];
+      return axiosService
+        .get_products_with_search_query(searchQuery)
+        .then((response) => {
+          this.cards = response.data.products;
         })
         .catch((error) => {
           throw error;

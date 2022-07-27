@@ -1,7 +1,6 @@
 <template>
   <form class="modal-form-wrapper">
     <div class="form">
-      <strong @click="$emit('close')">X</strong>
       <h2 class="form__title">Update product</h2>
       <div class="form__field">
         <BaseTextarea
@@ -33,10 +32,10 @@
         <label>Old image of Product</label>
         <img class="product__old-image" :src="old_image" alt="" />
       </div>
-      <div class="form__field">
+      <div class="form__field form__field__input-image">
         <BaseInputFileImage
           v-model="product.Image"
-          label="New product image"
+          label="Click here to add New product image"
           id="image"
           :errsMsg="errors.input_image"
         ></BaseInputFileImage>
@@ -51,11 +50,20 @@
         ></BaseInput>
       </div>
 
-      <button @click.prevent="updateProduct" class="content card__put">
-        Put
-      </button>
-      <pre>{{ product }}</pre>
-      <pre>{{ card }}</pre>
+      <div class="form__button-wrapper">
+        <button
+          class="form__button form__button--post"
+          @click.prevent="updateProduct"
+        >
+          Update
+        </button>
+        <button
+          class="form__button form__button--cancel"
+          @click="$emit('close')"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   </form>
 </template>
@@ -128,11 +136,11 @@ export default {
       let error = false;
       //textarea name -- max 100 chars, not null
       const MAX_NAME_LENGTH = 100;
-      const MAX_DESCRIPTION_LENGTH = 255;
-      const MAX_QUANTITY = 500;
+      const MAX_DESCRIPTION_LENGTH = 5000;
+      const MAX_QUANTITY = 50;
       const MIN_QUANTITY = 1;
       const MIN_PRICE = 1;
-      const MAX_PRICE = 999999;
+      const MAX_PRICE = 100000;
 
       if (newObject.Name !== oldObject.name) {
         const CURRENT_NAME_LENGTH = newObject.Name.length;

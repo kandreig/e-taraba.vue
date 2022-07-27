@@ -235,4 +235,70 @@ export default {
 .form__button--cancel {
   background-color: red;
 }
+
+.form__field__input-image input {
+  display: none;
+}
+.form__field__input-image label {
+  font-weight: 900;
+  border-bottom: 1px solid gray;
+  align-self: start;
+  cursor: pointer;
+}
+</style>
+
+<style>
+.admin-card {
+  min-width: 300px;
+  width: 40%;
+  display: flex;
+  flex: auto;
+  padding: 10px;
+  margin-inline: 5px;
+  margin-block: 1em;
+  flex-direction: column;
+  background-color: #fafafa;
+}
+
+.admin-card--margin-block > * {
+  margin-block: 10px;
+}
+.admin-card .admin-card__header {
+  margin-right: 1%;
+}
+
+.admin-card__id {
+  display: flex !important;
+  align-items: center;
+}
+
+.left__side {
+  width: 70%;
+}
+.admin-card > * {
+  vertical-align: middle;
+  display: inline-block;
+}
+.scroll-three-rows {
+  width: 100%;
+  line-height: 1.3rem;
+  height: 3.9rem;
+  overflow-x: hidden;
+  overflow-y: scroll-three-rows;
+  padding: 5px;
+  margin-bottom: 5px;
+  box-shadow: 1px 1px 3px 1px #333;
+}
+
+.img--square {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  width: 100px;
+}
+.admin-card__btn--put {
+  background-color: lightblue !important;
+}
+.admin-card__btn--delete {
+  background-color: rgb(253, 72, 72) !important;
+}
 </style>

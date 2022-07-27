@@ -1,43 +1,57 @@
 <template>
-  <div class="db__card">
-    <div class="content id">
-      <h3>ID</h3>
+  <div class="admin-card">
+    <div class="admin-card__id">
+      <h3 class="admin-card__header">ID</h3>
       <p>{{ card.id }}</p>
     </div>
-    <div class="content name">
+    <div class="admin-card__name">
       <h3>NAME</h3>
-      <p class="scroll">
+      <p class="scroll-three-rows">
         {{ card.name }}
       </p>
     </div>
-    <div class="content photo">
+    <div class="admin-card__photo">
       <h3>PHOTO</h3>
-      <img class="square" :src="localhost + card.photoId + '.jpg'" alt="" />
+      <img
+        class="img--square"
+        :src="localhost + card.photoId + '.jpg'"
+        alt=""
+      />
     </div>
-    <div class="content description">
+    <div class="admin-card__description">
       <h3>DESCRIPTION</h3>
-      <p class="scroll">
+      <p class="scroll-three-rows">
         {{ card.description }}
       </p>
     </div>
-    <div class="content quantity">
+    <div class="admin-card__quantity">
       <h3>QUANTITY</h3>
       <p>{{ card.quantity }} <i>pcs</i></p>
     </div>
-    <div class="content photo__id">
+    <div class="admin-card__photo-id">
       <h3>PHOTO ID</h3>
       <p>{{ card.photoId }}</p>
     </div>
-    <div class="content path">
+    <div class="admin-card__path">
       <h3>PHOTO PAHT</h3>
       <p>{{ card.photoFolderPath }}</p>
     </div>
-    <div class="content price">
+    <div class="admin-card__price">
       <h3>PRICE</h3>
       <p>{{ card.price }}<i>$</i></p>
     </div>
-    <button class="content card__put" @click="toggleFormVisibile">PUT</button>
-    <button class="content card__delete" @click="deleteProduct">DELETE</button>
+    <button
+      class="admin-card__btn admin-card__btn--put"
+      @click="toggleFormVisibile"
+    >
+      PUT
+    </button>
+    <button
+      class="admin-card__btn admin-card__btn--delete"
+      @click="deleteProduct"
+    >
+      DELETE
+    </button>
   </div>
   <ProductPutForm
     v-if="putFormVisibility"
@@ -81,68 +95,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.db__card {
-  min-width: 350px;
-  width: 50%;
-  display: flex;
-  padding: 5px;
-  margin-block: 10px;
-  flex-direction: column;
-  background-color: #fafafa;
-}
-.left__side {
-  width: 70%;
-}
-.content:nth-child(odd) {
-  background-color: #dddd;
-}
-.content > * {
-  vertical-align: middle;
-  display: inline-block;
-}
-.content {
-  margin-block: 5px;
-}
-
-.content h3 {
-  margin-right: 15px;
-}
-
-.scroll {
-  width: 100%;
-  line-height: 1.3rem;
-  height: 3.9rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding: 5px;
-  margin-bottom: 5px;
-  box-shadow: 1px 1px 3px 1px #333;
-}
-
-.right__side > * {
-  width: 100%;
-  display: block;
-}
-img.square {
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  width: 100px;
-}
-.card__put {
-  background-color: lightblue !important;
-}
-.card__delete {
-  background-color: rgb(253, 72, 72) !important;
-}
-</style>
-<style scoped>
-button {
-  border: none;
-  display: inline-block;
-}
-textarea {
-  display: block !important;
-}
-</style>

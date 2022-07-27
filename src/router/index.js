@@ -1,7 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AdminView from "../views/AdminView.vue";
+import CartDetailsView from "../views/CartDetailsView.vue";
+import ProductDetailsView from "../views/ProductDetailsView.vue";
 import { useUserStore } from "@/stores/userStore";
+import { useProductStore } from "@/stores/productStore";
 
 const routes = [
   {
@@ -9,6 +12,13 @@ const routes = [
     name: "home",
     component: HomeView,
     // meta: { requiresAuth: false },
+    beforeEnter: () => {
+      //load products to display
+      const store = useProductStore();
+
+      store.getProducts();
+      console.log("products loaded before entering home");
+    },
   },
   {
     path: "/admin",
@@ -39,6 +49,17 @@ const routes = [
           // }
         });
     },
+  },
+  {
+    path: "/productDetails/:id",
+    name: "productDetails",
+    component: ProductDetailsView,
+    props: true,
+  },
+  {
+    path: "/cartDetails",
+    name: "cartDetails",
+    component: CartDetailsView,
   },
   {
     path: "/about",
