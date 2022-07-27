@@ -107,5 +107,9 @@ main img {
 .i--out-of-stock {
   color: red;
 }
+.description {
+  margin-block: 10%;
+  padding-inline: 1%;
+}
 </style>
 <style></style>
