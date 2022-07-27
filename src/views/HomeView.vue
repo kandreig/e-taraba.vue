@@ -17,15 +17,15 @@
             class="search__parameters__form"
             @submit.prevent="filterProducts"
           >
-            <div class="search__parameters__price--input">
+            <div class="search__parameters__price">
               <input
-                class="input__price"
+                class="search__parameters__price--input"
                 type="text"
                 placeholder="min. price"
                 v-model="minPrice"
               /><span>-</span
               ><input
-                class="input__price"
+                class="search__parameters__price--input"
                 type="text"
                 placeholder="max. price"
                 v-model="maxPrice"
@@ -94,7 +94,6 @@ export default {
 
 <style>
 .home {
-  background-color: #f2f2f7;
   display: grid;
   grid-template-areas:
     " header header "
@@ -141,30 +140,32 @@ aside {
 .search__parameters {
   padding: 8px;
   background-color: white;
-  border: 1px solid gray;
   border-radius: 3px;
   line-height: 1.5;
 }
 
-.search__parameters__price--input {
+.search__parameters__price {
   display: flex;
 }
-.search__parameters__price--input > input {
-  border-radius: 10px;
-  background-color: whitesmoke;
+.search__parameters__price--input {
+  border-radius: 5px;
+  background-color: #fbfbfb;
   color: black;
   padding-left: 3px;
   margin-inline: 5px;
-}
-
-.input__price {
+  border: 1px groove lightgray;
   width: 50%;
 }
 
 .search__parameters__form__button {
-  margin: 8px 0 0;
-  font-weight: 700;
-  padding: 3px;
+  margin-block: 8px;
+  margin-inline: 7px;
+  background: gray;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  padding: 5px;
 }
 main {
   grid-area: main;

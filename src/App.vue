@@ -41,7 +41,7 @@ body {
   font-size: 1rem;
   line-height: 1.3;
   color: #333;
-  background-color: #f2f2f7;
+  background-color: #f7f8fc;
 }
 
 a {
@@ -55,7 +55,6 @@ main,
 footer,
 header {
   background-color: #fff;
-  border: 1px solid gray;
   padding: 20px;
 }
 
