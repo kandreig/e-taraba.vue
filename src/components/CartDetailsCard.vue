@@ -56,6 +56,9 @@ export default {
       );
     },
     removeFromCart() {
+      if (this.cartStore.cartItems.length == 1) {
+        this.$router.push({ name: "home" });
+      }
       this.cartStore.removeFromStore(this.card);
     },
   },

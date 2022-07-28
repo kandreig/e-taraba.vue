@@ -6,7 +6,7 @@
     </div>
     <div class="admin-card__name">
       <h3>NAME</h3>
-      <p class="scroll-three-rows">
+      <p class="scroll two-rows">
         {{ card.name }}
       </p>
     </div>
@@ -20,7 +20,7 @@
     </div>
     <div class="admin-card__description">
       <h3>DESCRIPTION</h3>
-      <p class="scroll-three-rows">
+      <p class="scroll ten-rows">
         {{ card.description }}
       </p>
     </div>
@@ -77,6 +77,7 @@ export default {
     return {
       localhost: "https://localhost:44379/images/",
       putFormVisibility: false,
+      deletePopUp: false,
     };
   },
   setup() {
@@ -87,7 +88,18 @@ export default {
   },
   methods: {
     deleteProduct() {
-      this.productStore.deleteProduct(this.card);
+      if (window.confirm("Do you really want to delete this product?")) {
+        this.productStore
+          .deleteProduct(this.card)
+          .then()
+          .catch(() => {
+            this.userStore.flashMessage =
+              "can not delete product, it was used to make an order";
+            setTimeout(() => {
+              this.userStore.flashMessage = "";
+            }, 3000);
+          });
+      }
     },
     toggleFormVisibile() {
       this.putFormVisibility = true;

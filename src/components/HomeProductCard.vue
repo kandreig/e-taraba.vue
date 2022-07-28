@@ -78,7 +78,7 @@ export default {
 .card__content {
   background-color: white;
   align-self: end;
-  margin: 0.5rem 0.5rem 2rem;
+  margin: 0.5rem 0rem 2rem;
   padding: 0.5rem;
   border-radius: 3px;
   box-shadow: 0 0.25rem 1rem rgb(0, 0, 0, 0.3);
@@ -102,7 +102,6 @@ export default {
   font-size: 1.5rem;
   margin-top: 10px;
   margin-right: 10px;
-  background-color: rgba(224, 193, 134, 0.24);
   width: 100%;
   text-align: center;
   color: black;
@@ -112,7 +111,9 @@ export default {
 .card__addtocart {
   background-color: lightcoral;
   color: white;
-  padding: 0.3rem;
+  padding-inline: 0.6rem;
+  padding-block: 0.4rem;
+  margin-top: 0.5rem;
   border: none;
   border-radius: 10px;
   align-self: flex-end;

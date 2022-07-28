@@ -40,6 +40,9 @@
                 id="phone"
               />
             </div>
+            <div class="error">
+              <em>{{ error }}</em>
+            </div>
           </div>
         </div>
         <div class="cart__summary">
@@ -61,6 +64,7 @@ export default {
       customerFirstName: "",
       customerLastName: "",
       customerPhone: "",
+      error: "",
     };
   },
   setup() {
@@ -70,6 +74,12 @@ export default {
   },
   methods: {
     postOrder() {
+      const error = this.validateDetails();
+      if (error) {
+        this.error =
+          "please input valid details; name not empty & less than 100 characters, phone not empty & less than 10 chars";
+        return;
+      }
       let orderToPost = {
         customerFirstName: this.customerFirstName,
         customerLastName: this.customerLastName,
@@ -77,6 +87,23 @@ export default {
         total: this.cartStore.totalPrice,
       };
       this.cartStore.postOrder(orderToPost);
+      this.$router.push({ name: "home" });
+    },
+    validateDetails() {
+      let error = false;
+      const CUSTOMER_NAME_MAXLENGTH = 100;
+      const CUSTOMER_PHONE_MAXLENGTH = 10;
+      if (
+        this.customerFirstName === "" ||
+        this.customerFirstName.length > CUSTOMER_NAME_MAXLENGTH ||
+        this.customerLastName === "" ||
+        this.customerLastName.length > CUSTOMER_NAME_MAXLENGTH ||
+        this.customerPhone === "" ||
+        this.customerPhone.length > CUSTOMER_PHONE_MAXLENGTH
+      ) {
+        error = true;
+      }
+      return error;
     },
   },
 };
@@ -94,7 +121,7 @@ export default {
   position: relative;
   width: 100%;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
@@ -121,5 +148,8 @@ input {
 .cart__summary {
   margin-top: 20px;
   text-align: center;
+}
+.error {
+  width: 175px;
 }
 </style>

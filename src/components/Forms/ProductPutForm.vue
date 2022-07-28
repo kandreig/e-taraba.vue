@@ -8,6 +8,7 @@
           label="Name"
           id="textarea-name"
           :errsMsg="errors.textarea_name"
+          rows="2"
         ></BaseTextarea>
       </div>
       <div class="form__field">
@@ -16,6 +17,7 @@
           label="Description"
           id="textarea-description"
           :errsMsg="errors.textarea_description"
+          rows="10"
         ></BaseTextarea>
       </div>
 

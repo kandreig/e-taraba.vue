@@ -93,7 +93,7 @@ export const useProductStore = defineStore("productStore", {
           this.cards.splice(index, 1);
         })
         .catch((error) => {
-          console.log(error);
+          throw error;
         });
     },
     updateProduct(product_object_to_update) {

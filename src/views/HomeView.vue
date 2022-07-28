@@ -17,15 +17,14 @@
             class="search__parameters__form"
             @submit.prevent="filterProducts"
           >
-            <div class="search__parameters__price--input">
+            <div class="search__parameters__price">
               <input
-                class="input__price"
+                class="search__parameters__price--input"
                 type="text"
                 placeholder="min. price"
                 v-model="minPrice"
-              /><span>-</span
-              ><input
-                class="input__price"
+              /><input
+                class="search__parameters__price--input"
                 type="text"
                 placeholder="max. price"
                 v-model="maxPrice"
@@ -94,12 +93,11 @@ export default {
 
 <style>
 .home {
-  background-color: #f2f2f7;
   display: grid;
   grid-template-areas:
     " header header "
     " sidebar main ";
-  grid-template-columns: minmax(200px, 1fr) 3fr;
+  grid-template-columns: 200px 3fr;
   grid-template-rows: 0.3fr 0.7fr;
   margin: 10px 0 60px 0;
   gap: 10px;
@@ -121,7 +119,6 @@ header {
 }
 
 aside {
-  margin-left: 10px;
   grid-area: sidebar;
   align-self: start;
   position: sticky;
@@ -137,34 +134,36 @@ aside {
   font-size: 1.3em;
   font-weight: 600;
 }
+.sidebar__search__parameters {
+  padding-left: 1rem;
+}
 
 .search__parameters {
   padding: 8px;
   background-color: white;
-  border: 1px solid gray;
   border-radius: 3px;
   line-height: 1.5;
 }
 
 .search__parameters__price--input {
-  display: flex;
-}
-.search__parameters__price--input > input {
-  border-radius: 10px;
-  background-color: whitesmoke;
+  border-radius: 5px;
+  background-color: #fbfbfb;
   color: black;
   padding-left: 3px;
   margin-inline: 5px;
-}
-
-.input__price {
+  border: 1px groove lightgray;
   width: 50%;
 }
 
 .search__parameters__form__button {
-  margin: 8px 0 0;
-  font-weight: 700;
-  padding: 3px;
+  margin-block: 8px;
+  margin-inline: 7px;
+  background: gray;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  padding: 5px;
 }
 main {
   grid-area: main;
@@ -178,7 +177,7 @@ main {
   justify-items: center;
   width: min(100%, 1010px);
   display: grid;
-  gap: 0.3rem;
+  gap: 3rem;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 </style>

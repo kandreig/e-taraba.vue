@@ -87,7 +87,7 @@ main img {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
 }
 .content h3 {
   margin-block: 20px;
