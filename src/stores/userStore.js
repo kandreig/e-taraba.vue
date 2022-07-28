@@ -5,6 +5,7 @@ export const useUserStore = defineStore("userStore", {
   state() {
     return {
       loggedIn: false,
+      flashMessage: "",
     };
   },
   getters: {},
@@ -36,9 +37,6 @@ export const useUserStore = defineStore("userStore", {
         })
         .catch((error) => {
           //access token has expired or is invalid => issue new access token
-          // console.log(
-          //   "Access token has expired, issuing new access token based on refresh token"
-          // );
           this.loggedIn = false;
           this.refresh_token();
           throw error;
@@ -53,7 +51,10 @@ export const useUserStore = defineStore("userStore", {
           localStorage.setItem("name", response.data.username);
         })
         .catch((error) => {
-          console.log("refresh token is not good");
+          this.flashMessage = "Please login again";
+          setTimeout(() => {
+            this.flashMessage = "";
+          }, 3000);
           localStorage.clear();
           throw error;
         });

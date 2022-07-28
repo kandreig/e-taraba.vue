@@ -3,8 +3,11 @@ import HomeView from "../views/HomeView.vue";
 import AdminView from "../views/AdminView.vue";
 import CartDetailsView from "../views/CartDetailsView.vue";
 import ProductDetailsView from "../views/ProductDetailsView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
+import NetworkErrorView from "../views/NetworkErrorView.vue";
 import { useUserStore } from "@/stores/userStore";
 import { useProductStore } from "@/stores/productStore";
+import { useCartStore } from "@/stores/cartStore";
 
 const routes = [
   {
@@ -31,22 +34,14 @@ const routes = [
       store
         .check_token()
         .then(() => {
-          // console.log("meta: " + to.meta.requiresAuth);
-          // console.log("loggedin: " + store.loggedIn);
-          // if (!store.loggedIn) {
-          // next("/");
-          // } else {
           next();
-          // }
         })
         .catch(() => {
-          // console.log("meta: " + to.meta.requiresAuth);
-          // console.log("loggedin: " + store.loggedIn);
-          // if (!store.loggedIn) {
+          store.flashMessage = "Please try to enter admin area once again";
+          setTimeout(() => {
+            store.flashMessage = "";
+          }, 3000);
           next("/");
-          // } else {
-          // next();
-          // }
         });
     },
   },
@@ -60,6 +55,13 @@ const routes = [
     path: "/cartDetails",
     name: "cartDetails",
     component: CartDetailsView,
+    beforeEnter: (to, from, next) => {
+      const store = useCartStore();
+
+      if (store.numberOfItemsInCart < 1) {
+        next({ name: "home" });
+      }
+    },
   },
   {
     path: "/about",
@@ -70,6 +72,13 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
+  {
+    path: "/:catchAll(.*)",
+    name: "notFound",
+    component: NotFoundView,
+    props: true,
+  },
+  { path: "/network-error", name: "networkError", component: NetworkErrorView },
 ];
 
 const router = createRouter({

@@ -87,6 +87,7 @@ export default {
         total: this.cartStore.totalPrice,
       };
       this.cartStore.postOrder(orderToPost);
+      this.$router.push({ name: "home" });
     },
     validateDetails() {
       let error = false;
@@ -120,7 +121,7 @@ export default {
   position: relative;
   width: 100%;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
 }
 

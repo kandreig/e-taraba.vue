@@ -37,9 +37,11 @@
     <main class="main">
       <div class="db__nav">
         <input
+          v-model="searchQuery"
           type="text"
           class="db__search"
           placeholder="search item in database"
+          v-if="this.selectedTable === 'products'"
         />
         <button class="search__button" @click="getCardsFromDb">GET</button>
         <button
@@ -93,6 +95,7 @@ export default {
     return {
       selectedTable: "products",
       postFormVisibilityAndType: null,
+      searchQuery: "",
     };
   },
   setup() {
@@ -113,15 +116,25 @@ export default {
     getCardsFromDb() {
       const selectedTable = this.selectedTable;
       if (selectedTable === "products") {
-        this.productStore
-          .getProducts()
-          .then(() => {
-            console.log("get products success");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        return;
+        if (this.searchQuery !== "") {
+          return this.productStore
+            .getProductsWithSearchQuery(this.searchQuery)
+            .then(() => {
+              console.log("get products success");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          return this.productStore
+            .getProducts()
+            .then(() => {
+              console.log("get products success");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
       if (selectedTable === "orders") {
         this.orderStore
@@ -148,7 +161,7 @@ export default {
   grid-template-columns: 20rem 1fr;
   gap: 10px;
   align-items: start;
-  background-color: #f2f2f7;
+  background-color: #f7f8fc;
 }
 .tables {
   text-align: start;
@@ -169,10 +182,13 @@ export default {
 }
 .db__search {
   width: 20%;
+  outline: none;
+  padding: 1px 5px;
 }
 
 .search__button {
   width: 5%;
+  margin-inline: 5px;
 }
 </style>
 <style>
@@ -279,15 +295,29 @@ export default {
   vertical-align: middle;
   display: inline-block;
 }
-.scroll-three-rows {
+.scroll {
   width: 100%;
-  line-height: 1.3rem;
-  height: 3.9rem;
   overflow-x: hidden;
-  overflow-y: scroll-three-rows;
-  padding: 5px;
-  margin-bottom: 5px;
+  overflow-y: scroll;
   box-shadow: 1px 1px 3px 1px #333;
+}
+.three-rows {
+  line-height: 1.3rem;
+  height: 4rem;
+  padding: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+.two-rows {
+  line-height: 1.3rem;
+  height: 2.7rem;
+  padding: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+.ten-rows {
+  line-height: 1.3rem;
+  height: 13.1rem;
+  padding: 0.1rem;
+  margin-bottom: 0.1rem;
 }
 
 .img--square {

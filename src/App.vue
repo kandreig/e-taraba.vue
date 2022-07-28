@@ -1,5 +1,6 @@
 <template>
   <Navbar></Navbar>
+
   <router-view />
   <footer>
     <p>Copyright reserved to Roweb</p>
@@ -59,8 +60,11 @@ header {
 }
 
 footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
   height: 50px;
 }
 
@@ -83,5 +87,28 @@ footer {
 
 .border-red {
   border: 1px solid red;
+}
+
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+#flashMessage {
+  animation-name: yellowfade;
+  animation-duration: 5s;
+}
+
+.flash-message {
+  position: sticky;
+  text-align: center;
+  top: 3.5rem;
+  left: 0;
+  right: 0;
+  z-index: 5;
 }
 </style>
