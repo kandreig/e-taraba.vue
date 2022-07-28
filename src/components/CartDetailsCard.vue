@@ -93,6 +93,7 @@ export default {
   color: Red;
 }
 .card-details-card__button {
+  cursor: pointer;
   outline: none;
   border: none;
   background: none;

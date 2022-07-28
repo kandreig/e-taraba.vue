@@ -60,7 +60,7 @@ const routes = [
 
       if (store.numberOfItemsInCart < 1) {
         next({ name: "home" });
-      }
+      } else next();
     },
   },
   {

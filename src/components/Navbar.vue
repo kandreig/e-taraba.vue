@@ -186,12 +186,14 @@ nav {
 }
 #search__bar__button__img {
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .cart {
   position: relative;
   margin-left: auto;
   margin-right: 15px;
+  cursor: pointer;
 }
 .cart__img {
   width: 20px;
@@ -220,6 +222,7 @@ nav {
   margin-left: 20px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .user__child {

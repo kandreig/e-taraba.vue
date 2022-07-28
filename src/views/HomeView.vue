@@ -164,6 +164,7 @@ aside {
   border-radius: 7px;
   color: white;
   padding: 5px;
+  cursor: pointer;
 }
 main {
   grid-area: main;
